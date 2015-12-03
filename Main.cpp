@@ -128,7 +128,7 @@ int getRow(string poppedStack)
 	system("pause");
 }
 int main()
-{	// 38-47 = 0-9; 48-51 = a-d; 52 = integer; + = 52; - = 53 0 = blank
+{	// 0 = blank; 37 = lambda; 38-47 = 0-9; 48-51 = a-d; 52 = integer; + = 52; - = 53 0 = blank
 	//			0		1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19		20		21	22	23	24	25	26	27	28	29		30
 	/*			Program	a	b	c	d	0	1	2	3	4	5	6	7	8	9	+	-	*	/	integer	write	"	(	)	,	;	:	=	$	begin	end
 	Prog		1
@@ -161,13 +161,13 @@ int main()
 	inputFile.open("finalv2.txt");
 	string lineOfCode = "";
 	string temp;
-	while (!inputFile.eof())
+
+	/*while (!inputFile.eof())
 	{
 		getline(inputFile, temp);
 		lineOfCode += temp + " ";
-	}
-	
-	cout << lineOfCode << endl;
+	}*/
+
 							//   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 	
 	int grammarTable[23][31] = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -192,38 +192,47 @@ int main()
 								{0, 0, 0, 0, 0, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 52, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 0, 0, 0, 0, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 48, 49, 50, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-	/*int row = 0;
+	int row = 0;
 	int col = 0;
 	bool isValid = true;
 
 	vector<string> stack;
 
 	stack.push_back("$");
-	stack.push_back("Prog");
+	stack.push_back("prog");
 
+	string currentSyntax;
+
+	inputFile >> currentSyntax;
+
+	cout << currentSyntax << endl;
 	while (!stack.empty() && isValid == true)
 	{
 
-		if (stack.back() == word[wordCounter])
+		if (stack.back() == currentSyntax)
 		{
 			stack.pop_back();
-			wordCounter++;
-
+		
 			cout << "Current Stack: ";
-			for (vector<char>::iterator it = stack.begin(); it != stack.end(); ++it)
+			for (vector<string>::iterator it = stack.begin(); it != stack.end(); ++it)
 			{
 				cout << *it;
 			}
-			cout << endl << "Matched: " << word[wordCounter - 1];
+
+			cout << endl << "Matched: " << currentSyntax;
+			//Read next syntax to look at
+			inputFile >> currentSyntax;
 			cout << endl << endl;
 		}
-		else if (stack.back() == '$')
+		else if (stack.back() == "$")
 		{
 			stack.pop_back();
 		}
 		else
 		{
-			switch (word[wordCounter])
+			col = getCol(currentSyntax);
+			row = getRow(stack.back());
+			/*switch (word[wordCounter])
 			{
 			case 'i':
 			{
@@ -266,9 +275,9 @@ int main()
 				break;
 			}
 
-			}//END SWITCH
+			}//END SWITCH*/
 
-			switch (stack.back())
+			/*switch (stack.back())
 			{
 			case 'E':
 			{
@@ -295,19 +304,19 @@ int main()
 				row = 4;
 				break;
 			}
-			}//END SWITCH
+			}//END SWITCH*/
 
 			stack.pop_back();
 
-			if (grammarTable[row][col] != "" && grammarTable[row][col] != "L")
+			if (grammarTable[row][col] != 0 && grammarTable[row][col] != 37)
 			{
-				for (string::reverse_iterator rit = grammarTable[row][col].rbegin(); rit != grammarTable[row][col].rend(); ++rit)
+				for (int::reverse_iterator rit = grammarTable[row][col].rbegin(); rit != grammarTable[row][col].rend(); ++rit)
 				{
 					stack.push_back(*rit);
 				}
 			}
 
-			if (grammarTable[row][col] == "")
+			if (grammarTable[row][col] == 0)
 			{
 				isValid = false;
 			}
@@ -321,7 +330,7 @@ int main()
 		cout << *it;
 		}
 		cout << endl << "Looking For: " << word[wordCounter] << endl << endl;
-	}//END WHILE
+	}//END WHILE*/
 
 	if (isValid)
 	{
@@ -331,7 +340,7 @@ int main()
 	{
 		cout << word << " is not valid." << endl;
 	}
-	*/
+	
 	system("pause");
 	return 0;
 }
