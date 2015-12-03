@@ -1,8 +1,132 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 using namespace std;
+
+int getRow(string);
+int getCol(string);
+
+int getCol(string code)
+{
+	if (code == "program")
+		return 0;
+	if (code == "a")
+		return 1;
+	if (code == "b")
+		return 2;
+	if (code == "c")
+		return 3;
+	if (code == "d")
+		return 4;
+	if (code == "0")
+		return 5;
+	if (code == "1")
+		return 6;
+	if (code == "2")
+		return 7;
+	if (code == "3")
+		return 8;
+	if (code == "4")
+		return 9;
+	if (code == "5")
+		return 10;
+	if (code == "6")
+		return 11;
+	if (code == "7")
+		return 12;
+	if (code == "8")
+		return 13;
+	if (code == "9")
+		return 14;
+	if (code == "+")
+		return 15;
+	if (code == "-")
+		return 16;
+	if (code == "*")
+		return 17;
+	if (code == "/")
+		return 18;
+	if (code == "integer")
+		return 19;
+	if (code == "write")
+		return 20;
+	if (code == "\"")
+		return 21;
+	if (code == "(")
+		return 22;
+	if (code == ")")
+		return 23;
+	if (code == ",")
+		return 24;
+	if (code == ";")
+		return 25;
+	if (code == ":")
+		return 26;
+	if (code == "=")
+		return 27;
+	if (code == "$")
+		return 28;
+	if (code == "begin")
+		return 29;
+	if (code == "end.")
+		return 30;
+
+	cout << endl << "Failed to find Column" << endl;
+	system("pause");
+}
+int getRow(string poppedStack)
+{
+	if (poppedStack == "prog")
+		return 0;
+	if (poppedStack == "identifier")
+		return 1;
+	if (poppedStack == "a")
+		return 2;
+	if (poppedStack == "dec-list")
+		return 3;
+	if (poppedStack == "dec")
+		return 4;
+	if (poppedStack == "c")
+		return 5;
+	if (poppedStack == "type")
+		return 6;
+	if (poppedStack == "stat-list")
+		return 7;
+	if (poppedStack == "d")
+		return 8;
+	if (poppedStack == "stat")
+		return 9;
+	if (poppedStack == "write")
+		return 10;
+	if (poppedStack == "str")
+		return 11;
+	if (poppedStack == "assign")
+		return 12;
+	if (poppedStack == "expr")
+		return 13;
+	if (poppedStack == "e")
+		return 14;
+	if (poppedStack == "term")
+		return 15;
+	if (poppedStack == "q")
+		return 16;
+	if (poppedStack == "factor")
+		return 17;
+	if (poppedStack == "number")
+		return 18;
+	if (poppedStack == "b")
+		return 19;
+	if (poppedStack == "sign")
+		return 20;
+	if (poppedStack == "digit")
+		return 21;
+	if (poppedStack == "id")
+		return 22;
+	cout << endl << "Failed to find Row" << endl;
+	system("pause");
+}
 int main()
 {	// 38-47 = 0-9; 48-51 = a-d; 52 = integer; + = 52; - = 53 0 = blank
 	//			0		1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19		20		21	22	23	24	25	26	27	28	29		30
@@ -31,6 +155,19 @@ int main()
 	digit								38	39	40	41	42	43	44	45	46	47
 	id					48	49	50	51
 	*/
+
+	fstream inputFile;
+
+	inputFile.open("finalv2.txt");
+	string lineOfCode = "";
+	string temp;
+	while (!inputFile.eof())
+	{
+		getline(inputFile, temp);
+		lineOfCode += temp + " ";
+	}
+	
+	cout << lineOfCode << endl;
 							//   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 	
 	int grammarTable[23][31] = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -55,7 +192,7 @@ int main()
 								{0, 0, 0, 0, 0, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 52, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 0, 0, 0, 0, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 48, 49, 50, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-	int row = 0;
+	/*int row = 0;
 	int col = 0;
 	bool isValid = true;
 
@@ -183,7 +320,7 @@ int main()
 		{
 		cout << *it;
 		}
-		cout << endl << "Looking For: " << word[wordCounter] << endl << endl;*/
+		cout << endl << "Looking For: " << word[wordCounter] << endl << endl;
 	}//END WHILE
 
 	if (isValid)
@@ -194,7 +331,7 @@ int main()
 	{
 		cout << word << " is not valid." << endl;
 	}
-
+	*/
 	system("pause");
 	return 0;
 }
