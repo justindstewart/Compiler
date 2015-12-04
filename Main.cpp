@@ -15,69 +15,19 @@ int getCol(string code)
 {
 	if (code == "program")
 		return 0;
-	/*if (code == "a")
-		return 1;
-	if (code == "b")
-		return 2;
-	if (code == "c")
-		return 3;
-	if (code == "d")
-		return 4;
-	if (code == "0")
-		return 5;
-	if (code == "1")
-		return 6;
-	if (code == "2")
-		return 7;
-	if (code == "3")
-		return 8;
-	if (code == "4")
-		return 9;
-	if (code == "5")
-		return 10;
-	if (code == "6")
-		return 11;
-	if (code == "7")
-		return 12;
-	if (code == "8")
-		return 13;
-	if (code == "9")
-		return 14;
-	if (code == "+")
-		return 15;
-	if (code == "-")
-		return 16;
-	if (code == "*")
-		return 17;
-	if (code == "/")
-		return 18;*/
 	if (code == "integer")
 		return 19;
 	if (code == "write")
 		return 20;
-	/*if (code == "\"")
-		return 21;
-	if (code == "(")
-		return 22;
-	if (code == ")")
-		return 23;
-	if (code == ",")
-		return 24;
-	if (code == ";")
-		return 25;
-	if (code == ":")
-		return 26;
-	if (code == "=")
-		return 27;
-	if (code == "$")
-		return 28;*/
 	if (code == "begin")
 		return 29;
 	if (code == "end.")
 		return 30;
 
+
 	cout << endl << "Failed to find Column" << endl;
 	system("pause");
+	return 0;
 }
 
 int getCol(char code)
@@ -137,6 +87,7 @@ int getCol(char code)
 
 	cout << endl << "Failed to find Column" << endl;
 	system("pause");
+	return 0;
 }
 int getRow(string poppedStack)
 {
@@ -188,6 +139,7 @@ int getRow(string poppedStack)
 		return 22;
 	cout << endl << "Failed to find Row" << endl;
 	system("pause");
+	return 0;
 }
 vector<string> findPush(vector<string> stack, int grammar)
 {
@@ -444,6 +396,7 @@ vector<string> findPush(vector<string> stack, int grammar)
 		stack.push_back("-");
 		return stack;
 	}
+	return stack;
 }
 
 
@@ -480,13 +433,6 @@ int main()
 
 	inputFile.open("finalv2.txt");
 	string lineOfCode = "";
-	string temp;
-
-	/*while (!inputFile.eof())
-	{
-		getline(inputFile, temp);
-		lineOfCode += temp + " ";
-	}*/
 
 							//   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 	
 	int grammarTable[23][31] = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -525,27 +471,48 @@ int main()
 
 	inputFile >> currentSyntax;
 
-	cout << currentSyntax << endl;
-
 	int counter = 0;
 
-	while (!stack.empty() && isValid == true)
+	while (!stack.empty() && isValid == true )
 	{
-
+		string temp (currentSyntax, counter, 1);
+		
 		if (stack.back() == currentSyntax)
 		{
+			cout << "Popped Value: " << stack.back() << endl;
 			stack.pop_back();
 		
-			cout << "Current Stack: ";
+			cout << "Matched: " << currentSyntax << endl;
+			cout << "New Stack: ";
 			for (vector<string>::iterator it = stack.begin(); it != stack.end(); ++it)
 			{
 				cout << *it << " ";
 			}
 
-			cout << endl << "Matched: " << currentSyntax;
 			//Read next syntax to look at
 			inputFile >> currentSyntax;
 			cout << endl << endl;
+		}
+		else if (stack.back() == temp)
+		{
+			cout << "Popped Value: " << stack.back() << endl;
+			stack.pop_back();
+
+			cout << "Matched " << currentSyntax[counter] << endl;
+			cout << "New Stack: ";
+			for (vector<string>::iterator it = stack.begin(); it != stack.end(); ++it)
+			{
+				cout << *it << " ";
+			}
+			cout << endl << endl;
+			
+			counter++;
+			if (counter >= currentSyntax.size())
+			{
+				counter = 0;
+				inputFile >> currentSyntax;
+			}
+
 		}
 		else if (stack.back() == "$")
 		{
@@ -555,23 +522,26 @@ int main()
 		{
 			if (currentSyntax == "program" || currentSyntax == "integer" || currentSyntax == "write" || currentSyntax == "begin" || currentSyntax == "end.")
 			{
+				cout << "Looking For: " << currentSyntax << endl;
 				col = getCol(currentSyntax);
 			}
 			else
 			{
+				cout << "Looking For: " << currentSyntax[counter] << endl;
 				col = getCol(currentSyntax[counter]);
-				counter++;
+				//counter++;
 			}
 
 			row = getRow(stack.back());
 
+			cout << "Popped Value: " << stack.back() << endl;
 			stack.pop_back();
 
 			if (grammarTable[row][col] != 0 && grammarTable[row][col] != 37)
 			{
 				stack = findPush(stack, grammarTable[row][col]);
 			}
-			cout << "Current Stack" << endl;
+			cout << "New Stack: ";
 			for (vector<string>::iterator it = stack.begin(); it != stack.end(); ++it)
 			{
 				cout << *it << " ";
