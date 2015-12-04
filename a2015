@@ -1,0 +1,7 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+	int a1 , b2a , c , ba12;
+	return 0;
+}
