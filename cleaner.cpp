@@ -22,12 +22,12 @@ using namespace std;
 /*************************************************************************************************************************************************************************
 * PROGRAM NAME: C++ WHITESPACE/COMMENT CLEANER (CPPCC)
 **************************************************************************************************************************************************************************
-* PURPOSE: This program receives a text file that is filled with C++ code. It will first remove all comments, then remove all whitespace. After that it properly formats
-*	   the file to be correct syntactically.
+* PURPOSE: This program receives a text file that is filled with a programming language defined by our professor. It will first remove all comments, then remove all 
+*          whitespace. It will then output the file to a seperate text file to be passed into a LR Parsing table to analyze syntax for correct grammar. 
 **************************************************************************************************************************************************************************/
 int main()
 {
-  	boost::regex commentReg("\\(\\*.*?\\*\\)"); 				//Regular Expression to find anything beginning with //
+  	boost::regex commentReg("\\(\\*.*?\\*\\)"); 				//Regular Expression to find any comments in the format (*-*), single or multi-line
   	boost::regex firstLine("\\s");						//Regular Expression to find any spaces
 	ifstream ifs("data.txt");						//Input file
 	ofstream ofs("data-clean.txt");						//Output file
@@ -52,7 +52,7 @@ int main()
   		
 		foundAt = temp.find(reservedWords[0]);
 			
-		//IF - If the string is found then insert a space.
+		//IF - If the program string is found then insert a space.
 		if(foundAt != string::npos)
 		{
 			temp.insert(foundAt + reservedWords[0].length(), " ");
@@ -62,7 +62,7 @@ int main()
 		{
 			foundAt = temp.find(sectionHeads[i]);
 			
-			//IF - If the string is found then insert a space.
+			//IF - If the section header string is found then insert a newline.
 			if(foundAt != string::npos)
 			{
 				temp.insert(foundAt + sectionHeads[i].length(), "\n");
@@ -70,17 +70,15 @@ int main()
 		}//END FOR
   		
 		ofs << temp;
-
+		
+		//IF - If the current string is not "end." or a ";" then insert a space between each token, else if it is ";" insert a newline
 		if(temp.compare("end.") != 0 && temp.compare(";"))
 		{
 			ofs << " ";
-		}
-
-		if(temp.compare(";") == 0)
+		}else if(temp.compare(";") == 0)
 		{
 			ofs << endl;
-		}
-
+		}//END IF
 	}//END FOR
 	
 	return 0;
