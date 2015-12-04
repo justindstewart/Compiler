@@ -6,7 +6,7 @@
 * SECTION		: TTH: 4:00 - 5:20pm
 * INSTRUCTOR    	: Dr. Ray Ahmadnia
 * DUE DATE		: December 9, 2015
-* COMPILE		: g++ -std=c++11 cleaner.cpp -lboost_regex -L/usr/lib/libboost_regex.so
+* COMPILE		: g++ -std=c++11 cleaner.cpp -lboost_regex -L/usr/lib/libboost_regex.so -o clean.o
 **************************************************************************************************************************************************************************/
 
 #include <iostream>
