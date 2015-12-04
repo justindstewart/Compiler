@@ -1,4 +1,3 @@
-//name
 #include <iostream>
 #include <string>
 #include <vector>
@@ -8,6 +7,7 @@ using namespace std;
 
 int getRow(string);
 int getCol(string);
+void findPush(vector<string>, int);
 
 int getCol(string code)
 {
@@ -128,6 +128,111 @@ int getRow(string poppedStack)
 	cout << endl << "Failed to find Row" << endl;
 	system("pause");
 }
+void findPush(vector<string> stack, int grammar)
+{
+	if (grammar == 1)
+	{
+		stack.push_back("end.");
+		stack.push_back("stat-list");
+		stack.push_back("begin");
+		stack.push_back("dec-list");
+		stack.push_back("var");
+		stack.push_back(";");
+		stack.push_back("identifier");
+		stack.push_back("program");
+	}
+	if (grammar == 2)
+	{
+		stack.push_back("id");
+		stack.push_back("A");;
+	}
+	if (grammar == 3)
+	{
+		stack.push_back("A");
+		stack.push_back("id");;
+	}
+	if (grammar == 4)
+	{
+		stack.push_back("A");
+		stack.push_back("digit");
+	}
+	if (grammar == 6)
+	{
+		stack.push_back(";");
+		stack.push_back("type");
+		stack.push_back(":");
+		stack.push_back("dec");
+	}
+	if (grammar == 7)
+	{
+		stack.push_back("C");
+		stack.push_back("identifier");
+	}
+	if (grammar == 8)
+	{
+		stack.push_back("dec");
+		stack.push_back(",");
+	}
+	if (grammar == 10)
+	{
+		stack.push_back("integer");
+	}
+	if (grammar == 11)
+	{
+		stack.push_back("D");
+		stack.push_back("stat");
+	}
+	if (grammar == 12)
+	{
+		stack.push_back("write");
+	}
+	if (grammar == 14)
+	{
+		stack.push_back("write");
+	}
+	if (grammar == 15)
+	{
+		stack.push_back("assign");
+	}
+	if (grammar == 16)
+	{
+		stack.push_back(";");
+		stack.push_back(")");
+		stack.push_back("identifier");
+		stack.push_back("str");
+		stack.push_back("(");
+		stack.push_back("write");
+	}
+	if (grammar == 17)
+	{
+		stack.push_back("\"");
+		stack.push_back("\"");
+	}
+	if (grammar == 19)
+	{
+		stack.push_back(";");
+		stack.push_back("expr");
+		stack.push_back("=");
+		stack.push_back("identifier");
+	}
+	if (grammar == 20)
+	{
+		stack.push_back("E");
+		stack.push_back("term");
+	}
+	if (grammar == 21)
+	{
+		stack.push_back("expr");
+		stack.push_back("+");
+	}
+	if (grammar == 22)
+	{
+		stack.push_back("expr");
+		stack.push_back("-");
+	}
+}
+
+
 int main()
 {	// 0 = blank; 37 = lambda; 38-47 = 0-9; 48-51 = a-d; 52 = integer; + = 52; - = 53 0 = blank
 	//			0		1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19		20		21	22	23	24	25	26	27	28	29		30
