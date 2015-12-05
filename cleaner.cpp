@@ -20,7 +20,7 @@
 using namespace std;
 
 /*************************************************************************************************************************************************************************
-* PROGRAM NAME: C++ WHITESPACE/COMMENT CLEANER (CPPCC)
+* PROGRAM NAME: WHITESPACE/COMMENT CLEANER (WCC)
 **************************************************************************************************************************************************************************
 * PURPOSE: This program receives a text file that is filled with a programming language defined by our professor. It will first remove all comments, then remove all 
 *          whitespace. It will then output the file to a seperate text file to be passed into a LR Parsing table to analyze syntax for correct grammar. 
