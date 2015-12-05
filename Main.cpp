@@ -462,7 +462,7 @@ int main()
 	int row = 0;
 	int col = 0;
 	bool isValid = true;
-
+	bool variablesDeclared = false;
 	vector<string> stack;
 
 	stack.push_back("$");
@@ -474,9 +474,14 @@ int main()
 
 	int counter = 0;
 
+	vector<string> listOfDeclaredVariables;
+
 	while (!stack.empty() && isValid == true )
 	{
 		string temp (currentSyntax, counter, 1);
+
+		if (stack.back() == "begin")
+			variablesDeclared = true;
 			
 		if (stack.back() == currentSyntax)
 		{
@@ -568,6 +573,11 @@ int main()
 			cout << ") is missing" << endl << endl;
 			isValid = false;
 		}
+		/*else if (stack.back() == "Write" && currentSyntax != "write")
+		{
+			cout << "write is spelled wrong" << endl << endl;
+			isValid = false;
+		}*/
 		else
 		{
 			if (currentSyntax == "program" || currentSyntax == "integer" || currentSyntax == "write" || currentSyntax == "begin" || currentSyntax == "end.")
@@ -580,6 +590,28 @@ int main()
 				cout << "Looking For: " << currentSyntax[counter] << endl;
 				col = getCol(currentSyntax[counter]);
 				//counter++;
+
+				if (stack.back() == "identifier" && variablesDeclared == true)
+				{
+					vector <string>::iterator it = listOfDeclaredVariables.begin();
+					bool declared = false;
+					while (it != listOfDeclaredVariables.end() && declared == false)
+					{
+						if (currentSyntax == *it)
+							declared = true;
+						++it;
+					}
+					if (declared == false)
+					{
+						cout << currentSyntax << " , variable not defined." << endl << endl;
+						isValid = false;
+					}
+				}
+			}
+
+			if (stack.back() == "dec")
+			{
+				listOfDeclaredVariables.push_back(currentSyntax);
 			}
 
 			row = getRow(stack.back());
@@ -610,15 +642,6 @@ int main()
 			}*/
 		}
 	}//END WHILE
-
-	if (isValid)
-	{
-		cout << "Program is Valid." << endl;
-	}
-	else
-	{
-		cout << "Program is not valid." << endl;
-	}
 	
 	system("pause");
 	return 0;
