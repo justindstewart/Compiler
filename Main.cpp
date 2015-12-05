@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <regex>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ int getCol(string);
 int getCol(char);
 vector<string> findPush(vector<string>, int);
 
-
+//This function takes a string finds the column for it.
 int getCol(string code)
 {
 	if (code == "program")
@@ -29,7 +30,7 @@ int getCol(string code)
 	//system("pause");
 	return 0;
 }
-
+//This function takes a character in a string and finds the column in the table.
 int getCol(char code)
 {
 	if (code == 'a')
@@ -89,6 +90,7 @@ int getCol(char code)
 	//system("pause");
 	return 0;
 }
+//This function takes what ever is going to get popped from the stack to find the correct row.
 int getRow(string poppedStack)
 {
 	if (poppedStack == "prog")
@@ -141,6 +143,7 @@ int getRow(string poppedStack)
 	//system("pause");
 	return 0;
 }
+//This function pushes the correct strings to the stack based of what grammar was found in the table.
 vector<string> findPush(vector<string> stack, int grammar)
 {
 	if (grammar == 1)
@@ -433,7 +436,6 @@ int main()
 	fstream inputFile;
 
 	inputFile.open("finalv2.txt");
-	string lineOfCode = "";
 
 							//   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 	
 	int grammarTable[23][31] = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -472,17 +474,22 @@ int main()
 
 	inputFile >> currentSyntax;
 
+	//initial counter to step through a string
 	int counter = 0;
 
+	//Holds a list of declared variables that we can use later to tell if variables used have been defined
 	vector<string> listOfDeclaredVariables;
 
 	while (!stack.empty() && isValid == true )
 	{
+		//temp holds whatever the current element of a string we are working on
 		string temp (currentSyntax, counter, 1);
 
+		//Checking when begin is getting popped lets us tell when we are done declaring variables, so we can start checking if variables are defined.
 		if (stack.back() == "begin")
 			variablesDeclared = true;
-			
+		
+		//When we find a match pop the stack and read next word
 		if (stack.back() == currentSyntax)
 		{
 			cout << "Popped Value: " << stack.back() << endl;
@@ -499,6 +506,7 @@ int main()
 			inputFile >> currentSyntax;
 			cout << endl << endl;
 		}
+		//If the stack in the back is equal to the character we are comparing then pop the stack and move on to the next character in the string
 		else if (stack.back() == temp)
 		{
 			cout << "Popped Value: " << stack.back() << endl;
@@ -513,11 +521,13 @@ int main()
 			cout << endl << endl;
 			
 			counter++;
+			
 			if (counter >= currentSyntax.size())
 			{
 				counter = 0;
 				inputFile >> currentSyntax;
 			}
+			//When " is found read until you hit the ending ".
 			else if (currentSyntax[0] == '"')
 			{
 				while (currentSyntax[counter] != '"')
@@ -528,6 +538,7 @@ int main()
 		{
 			stack.pop_back();
 		}
+		//The Following else if's are used to find errors in the program.
 		else if (stack.back() == "prog" && currentSyntax != "program")
 		{
 			cout << "Program is expected (missing or misspelled)." << endl << endl;
@@ -548,6 +559,7 @@ int main()
 			cout << "end. is expected (missing or misspelled)." << endl << endl;
 			isValid = false;
 		}
+		//If type is popped only integer is excepted anything else and integer is missing or misspelled
 		else if (stack.back() == "type" && currentSyntax != "integer")
 		{
 			cout << "integer is expected (missing or misspelled)." << endl << endl;
@@ -573,24 +585,28 @@ int main()
 			cout << ") is missing" << endl << endl;
 			isValid = false;
 		}
-		/*else if (stack.back() == "Write" && currentSyntax != "write")
+		//This checks if the current word is not write but consists of the letters of write then write was misspelled
+		else if (stack.back() == "D" && currentSyntax != "write" && regex_match(currentSyntax, regex("[write]*")))
 		{
 			cout << "write is spelled wrong" << endl << endl;
 			isValid = false;
-		}*/
+		}
 		else
 		{
+			//This if keeps track of the string columns of getCol
 			if (currentSyntax == "program" || currentSyntax == "integer" || currentSyntax == "write" || currentSyntax == "begin" || currentSyntax == "end.")
 			{
 				cout << "Looking For: " << currentSyntax << endl;
 				col = getCol(currentSyntax);
 			}
+			//IF the word being looked for isnt a string then its an element of a string, find the col.
 			else
 			{
 				cout << "Looking For: " << currentSyntax[counter] << endl;
 				col = getCol(currentSyntax[counter]);
 				//counter++;
 
+				//This loop runs once variables have been declared, when identifier is popped it checks withthe list of declared vairables to see if the current identifier is declared
 				if (stack.back() == "identifier" && variablesDeclared == true)
 				{
 					vector <string>::iterator it = listOfDeclaredVariables.begin();
@@ -609,6 +625,7 @@ int main()
 				}
 			}
 
+			//Once declarations start when the stack pops dec add the words after the dec into the list of declared variables
 			if (stack.back() == "dec")
 			{
 				listOfDeclaredVariables.push_back(currentSyntax);
@@ -621,6 +638,7 @@ int main()
 			stack.pop_back();
 			cout << "Row: " << row << " Col: " << col << endl;
 
+			//If table value is empty or lambda
 			if (grammarTable[row][col] != 0 && grammarTable[row][col] != 37)
 			{
 				cout << "Grammar #: " << grammarTable[row][col] << endl;
