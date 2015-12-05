@@ -111,7 +111,7 @@ int getRow(string poppedStack)
 		return 8;
 	if (poppedStack == "stat")
 		return 9;
-	if (poppedStack == "write")
+	if (poppedStack == "Write")
 		return 10;
 	if (poppedStack == "str")
 		return 11;
@@ -211,7 +211,7 @@ vector<string> findPush(vector<string> stack, int grammar)
 	}
 	if (grammar == 14)
 	{
-		stack.push_back("write");
+		stack.push_back("Write");
 		return stack;
 	}
 	if (grammar == 15)
@@ -231,6 +231,7 @@ vector<string> findPush(vector<string> stack, int grammar)
 	}
 	if (grammar == 17)
 	{
+		stack.push_back(",");
 		stack.push_back("\"");
 		stack.push_back("\"");
 		return stack;
@@ -293,9 +294,9 @@ vector<string> findPush(vector<string> stack, int grammar)
 	}
 	if (grammar == 30)
 	{
-		stack.push_back("(");
-		stack.push_back("expr");
 		stack.push_back(")");
+		stack.push_back("expr");
+		stack.push_back("(");
 		return stack;
 	}
 	if (grammar == 31)
@@ -445,7 +446,7 @@ int main()
 								{0, 11, 11, 11, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 12, 12, 12, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 37},
 								{0, 15, 15, 15, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-								{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+								{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 37, 37, 37, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 19, 19, 19, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 								{0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -512,7 +513,11 @@ int main()
 				counter = 0;
 				inputFile >> currentSyntax;
 			}
-
+			else if (currentSyntax[0] == '"')
+			{
+				while (currentSyntax[counter] != '"')
+					counter++;
+			}
 		}
 		else if (stack.back() == "$")
 		{
@@ -536,10 +541,11 @@ int main()
 
 			cout << "Popped Value: " << stack.back() << endl;
 			stack.pop_back();
+			cout << "Row: " << row << " Col: " << col << endl;
 
 			if (grammarTable[row][col] != 0 && grammarTable[row][col] != 37)
 			{
-				cout << "Row: " << row << " Col: " << col << " Grammar #: " << grammarTable[row][col] << endl;
+				cout << "Grammar #: " << grammarTable[row][col] << endl;
 				stack = findPush(stack, grammarTable[row][col]);
 			}
 			else if (grammarTable[row][col] == 37)
