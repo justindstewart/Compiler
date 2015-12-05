@@ -543,9 +543,29 @@ int main()
 			cout << "end. is expected (missing or misspelled)." << endl << endl;
 			isValid = false;
 		}
-		else if (stack.back() == "integer" && currentSyntax != "integer")
+		else if (stack.back() == "type" && currentSyntax != "integer")
 		{
 			cout << "integer is expected (missing or misspelled)." << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == ";" && currentSyntax != ";")
+		{
+			cout << "; is missing" << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == "," && currentSyntax != ",")
+		{
+			cout << ", is missing" << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == "(" && currentSyntax != "(")
+		{
+			cout << "( is missing" << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == ")" && currentSyntax != ")")
+		{
+			cout << ") is missing" << endl << endl;
 			isValid = false;
 		}
 		else
@@ -566,12 +586,6 @@ int main()
 
 			cout << "Popped Value: " << stack.back() << endl;
 
-			/*if (stack.back() == "var" && currentSyntax != "var")
-			{
-				cout << "var is expected (missing or misspelled)." << endl << endl;
-				isValid = false;
-			}*/
-
 			stack.pop_back();
 			cout << "Row: " << row << " Col: " << col << endl;
 
@@ -589,13 +603,6 @@ int main()
 				cout << *it << " ";
 			}
 			cout << endl << endl;
-
-			/*if (row == 0 && col > 30 || (row == 0 && col != 0))
-			{
-				cout << "Program is expected (missing or misspelled)." << endl << endl;
-				isValid = false;
-			}*/
-			
 
 			/*if (grammarTable[row][col] == 0)
 			{
