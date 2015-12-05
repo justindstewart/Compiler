@@ -25,8 +25,8 @@ int getCol(string code)
 		return 30;
 
 
-	cout << endl << "Failed to find Column" << endl;
-	system("pause");
+	//cout << endl << "Failed to find Column" << endl;
+	//system("pause");
 	return 0;
 }
 
@@ -85,8 +85,8 @@ int getCol(char code)
 	if (code == '$')
 		return 28;
 
-	cout << endl << "Failed to find Column" << endl;
-	system("pause");
+	//cout << endl << "Failed to find Column" << endl;
+	//system("pause");
 	return 0;
 }
 int getRow(string poppedStack)
@@ -137,8 +137,8 @@ int getRow(string poppedStack)
 		return 21;
 	if (poppedStack == "id")
 		return 22;
-	cout << endl << "Failed to find Row" << endl;
-	system("pause");
+	//cout << endl << "Failed to find Row" << endl;
+	//system("pause");
 	return 0;
 }
 vector<string> findPush(vector<string> stack, int grammar)
@@ -462,7 +462,7 @@ int main()
 	int row = 0;
 	int col = 0;
 	bool isValid = true;
-
+	bool variablesDeclared = false;
 	vector<string> stack;
 
 	stack.push_back("$");
@@ -474,10 +474,15 @@ int main()
 
 	int counter = 0;
 
+	vector<string> listOfDeclaredVariables;
+
 	while (!stack.empty() && isValid == true )
 	{
 		string temp (currentSyntax, counter, 1);
-		
+
+		if (stack.back() == "begin")
+			variablesDeclared = true;
+			
 		if (stack.back() == currentSyntax)
 		{
 			cout << "Popped Value: " << stack.back() << endl;
@@ -523,6 +528,56 @@ int main()
 		{
 			stack.pop_back();
 		}
+		else if (stack.back() == "prog" && currentSyntax != "program")
+		{
+			cout << "Program is expected (missing or misspelled)." << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == "var" && currentSyntax != "var")
+		{
+			cout << "var is expected (missing or misspelled)." << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == "begin" && currentSyntax != "begin")
+		{
+			cout << "begin is expected (missing or misspelled)." << endl << endl;
+			isValid = false;
+		}
+		else if ((stack.back() == "end." && currentSyntax != "end."))
+		{
+			cout << "end. is expected (missing or misspelled)." << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == "type" && currentSyntax != "integer")
+		{
+			cout << "integer is expected (missing or misspelled)." << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == ";" && currentSyntax != ";")
+		{
+			cout << "; is missing" << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == "," && currentSyntax != ",")
+		{
+			cout << ", is missing" << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == "(" && currentSyntax != "(")
+		{
+			cout << "( is missing" << endl << endl;
+			isValid = false;
+		}
+		else if (stack.back() == ")" && currentSyntax != ")")
+		{
+			cout << ") is missing" << endl << endl;
+			isValid = false;
+		}
+		/*else if (stack.back() == "Write" && currentSyntax != "write")
+		{
+			cout << "write is spelled wrong" << endl << endl;
+			isValid = false;
+		}*/
 		else
 		{
 			if (currentSyntax == "program" || currentSyntax == "integer" || currentSyntax == "write" || currentSyntax == "begin" || currentSyntax == "end.")
@@ -535,11 +590,34 @@ int main()
 				cout << "Looking For: " << currentSyntax[counter] << endl;
 				col = getCol(currentSyntax[counter]);
 				//counter++;
+
+				if (stack.back() == "identifier" && variablesDeclared == true)
+				{
+					vector <string>::iterator it = listOfDeclaredVariables.begin();
+					bool declared = false;
+					while (it != listOfDeclaredVariables.end() && declared == false)
+					{
+						if (currentSyntax == *it)
+							declared = true;
+						++it;
+					}
+					if (declared == false)
+					{
+						cout << currentSyntax << " , variable not defined." << endl << endl;
+						isValid = false;
+					}
+				}
+			}
+
+			if (stack.back() == "dec")
+			{
+				listOfDeclaredVariables.push_back(currentSyntax);
 			}
 
 			row = getRow(stack.back());
 
 			cout << "Popped Value: " << stack.back() << endl;
+
 			stack.pop_back();
 			cout << "Row: " << row << " Col: " << col << endl;
 
@@ -558,29 +636,12 @@ int main()
 			}
 			cout << endl << endl;
 
-			/*if (grammarTable[row][col] != 0 && grammarTable[row][col] != 37)
-			{
-				for (int::reverse_iterator rit = grammarTable[row][col].rbegin(); rit != grammarTable[row][col].rend(); ++rit)
-				{
-					stack.push_back(*rit);
-				}
-			}*/
-
-			if (grammarTable[row][col] == 0)
+			/*if (grammarTable[row][col] == 0)
 			{
 				isValid = false;
-			}
+			}*/
 		}
 	}//END WHILE
-
-	if (isValid)
-	{
-		cout << "Program is Valid." << endl;
-	}
-	else
-	{
-		cout << "Program is not valid." << endl;
-	}
 	
 	system("pause");
 	return 0;
