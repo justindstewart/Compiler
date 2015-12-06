@@ -429,7 +429,7 @@ int main()
 	*/
 	//Run the program to clean up the text file
 	cleanTextFile();
-	cout << "Text Filed Cleaned up" << endl << endl;
+	cout << "Text File Cleaned Up" << endl << endl;
 
 	fstream inputFile;
 
@@ -635,6 +635,7 @@ int main()
 	}//END WHILE
 	if (isValid == true)
 	{
+		cout << "Validation Finished" << endl << endl;
 		translate();
 		cout << "Translation Finished" << endl << endl;
 	}
