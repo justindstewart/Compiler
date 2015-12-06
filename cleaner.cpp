@@ -83,14 +83,13 @@ int main()
 		{
 			tok_iter++;
 			temp = *tok_iter;	
-			cout << "<" << temp << ">\n";
 			while(temp.compare("\"") != 0)
 			{
 				ofs << temp;
 				tok_iter++;
 				temp = *tok_iter;	
 			}
-			ofs << temp;
+			ofs << temp << " ";
 		}
 		//END IF
 	}//END FOR
