@@ -16,6 +16,7 @@
 #include <boost/regex.hpp>
 #include <fstream>
 #include <boost/tokenizer.hpp>
+#include "cleaner.h"
 
 using namespace std;
 
@@ -25,13 +26,13 @@ using namespace std;
 * PURPOSE: This program receives a text file that is filled with a programming language defined by our professor. It will first remove all comments, then remove all 
 *          whitespace. It will then output the file to a seperate text file to be passed into a LR Parsing table to analyze syntax for correct grammar. 
 **************************************************************************************************************************************************************************/
-int main()
+void cleanTextFile()
 {
   	boost::regex commentReg("\\(\\*.*?\\*\\)"); 				//Regular Expression to find any comments in the format (*-*), single or multi-line
   	boost::regex firstLine("\\s");						//Regular Expression to find any spaces
-	ifstream ifs("data.txt");						//Input file
-	ofstream ofs("data-clean.txt");						//Output file
-	string reservedWords[3] = {"program", "INTEGER", "write"};		//Array of reserved words
+	ifstream ifs("finalv1.txt");						//Input file
+	ofstream ofs("finalv2.txt");						//Output file
+	string reservedWords[3] = {"program", "integer", "write"};		//Array of reserved words
 	string sectionHeads[2] = {"begin", "var"};				//Array of section heads
 	string temp;								//Temporary string to hold line and parse reserved words out
 	size_t foundAt;								//Variable to hold the position the reserved word was found
@@ -81,6 +82,5 @@ int main()
 		}//END IF
 	}//END FOR
 	
-	return 0;
 }
 	

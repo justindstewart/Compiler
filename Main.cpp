@@ -3,6 +3,8 @@
 #include <vector>
 #include <fstream>
 #include <regex>
+#include "cleaner.h"
+#include "translator.h"
 
 using namespace std;
 
@@ -432,6 +434,7 @@ int main()
 	digit								38	39	40	41	42	43	44	45	46	47
 	id					48	49	50	51
 	*/
+	cleanTextFile();
 
 	fstream inputFile;
 
@@ -530,8 +533,16 @@ int main()
 			//When " is found read until you hit the ending ".
 			else if (currentSyntax[0] == '"')
 			{
-				while (currentSyntax[counter] != '"')
+				while (currentSyntax[counter] != '"' )
+				{
 					counter++;
+					//If you still havent found the paired quotation move on to next word.
+					if (counter >= currentSyntax.size())
+					{
+						inputFile >> currentSyntax;
+						counter = 0;
+					}
+				}
 			}
 		}
 		else if (stack.back() == "$")
@@ -660,6 +671,8 @@ int main()
 			}*/
 		}
 	}//END WHILE
+
+	translate();
 	
 	system("pause");
 	return 0;
