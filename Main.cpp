@@ -4,7 +4,7 @@
 #include <fstream>
 #include <regex>
 #include "cleaner.h"
-#include "translator.h"
+//#include "translator.h"
 
 using namespace std;
 
@@ -434,6 +434,7 @@ int main()
 	digit								38	39	40	41	42	43	44	45	46	47
 	id					48	49	50	51
 	*/
+	//Run the program to clean up the text file
 	cleanTextFile();
 
 	fstream inputFile;
@@ -567,7 +568,10 @@ int main()
 		}
 		else if ((stack.back() == "end." && currentSyntax != "end."))
 		{
-			cout << "end. is expected (missing or misspelled)." << endl << endl;
+			if (currentSyntax == "end")
+				cout << ". is missing" << endl << endl;
+			else
+				cout << "end. is expected (missing or misspelled)." << endl << endl;
 			isValid = false;
 		}
 		//If type is popped only integer is excepted anything else and integer is missing or misspelled
@@ -672,7 +676,7 @@ int main()
 		}
 	}//END WHILE
 
-	translate();
+	//translate();
 	
 	system("pause");
 	return 0;
