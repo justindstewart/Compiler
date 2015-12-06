@@ -15,7 +15,7 @@
 #include <string.h>
 #include <fstream>
 #include <boost/tokenizer.hpp>
-#include "translator.h"
+
 using namespace std;
 
 /*************************************************************************************************************************************************************************
@@ -23,9 +23,9 @@ using namespace std;
 **************************************************************************************************************************************************************************
 * PURPOSE: This program receives a text file that is filled with verified code. It will then translate the code into C++ to be compiled and run.
 **************************************************************************************************************************************************************************/
-void translate()
+int main()
 {
-	ifstream ifs("finalv2.txt");						//Input file
+	ifstream ifs("data-clean.txt");						//Input file
 	ofstream ofs;								//Output file
 	string reservedWords[6] = {"program", "var", "integer", 		//Array of reserved words
 				   "begin", "write", "end."};
@@ -161,4 +161,5 @@ void translate()
 
 	ofs.close();
 
+	return 0;
 }
