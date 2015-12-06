@@ -85,7 +85,7 @@ void cleanTextFile()
 		{
 			tok_iter++;
 			temp = *tok_iter;
-			cout << "<" << temp << ">\n";
+			//cout << "<" << temp << ">\n";
 			while (temp.compare("\"") != 0)
 			{
 				ofs << temp;
