@@ -36,7 +36,7 @@ int main()
 	string temp;								//Temporary string to hold line and parse reserved words out
 	size_t foundAt;								//Variable to hold the position the reserved word was found
 	typedef boost::tokenizer<boost::char_separator<char> > tokenizer;	//Typedef the boost statement to tokenizer.
-  	boost::char_separator<char> sep("",",;=+():*");				//Tokenizer by special chars
+  	boost::char_separator<char> sep("",",;=+():*\"");				//Tokenizer by special chars
 	string content( (istreambuf_iterator<char>(ifs) ),			//String variable fed an entire text file.
 			(istreambuf_iterator<char>()    ));
 	content = regex_replace (content, commentReg, "");			//Take out all comments
@@ -44,7 +44,7 @@ int main()
 	
 	//Set the tokenizer with the string and delimiter setup.
   	tokenizer tokens(content, sep);
-  	
+
   	//FOR - Loop through the string and take each token
   	for (tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter)
   	{
@@ -70,15 +70,29 @@ int main()
 		}//END FOR
   		
 		ofs << temp;
-		
+
 		//IF - If the current string is not "end." or a ";" then insert a space between each token, else if it is ";" insert a newline
-		if(temp.compare("end.") != 0 && temp.compare(";"))
+		if(temp.compare("end.") != 0 && temp.compare(";") != 0 && temp.compare("\"") != 0)
 		{
 			ofs << " ";
 		}else if(temp.compare(";") == 0)
 		{
 			ofs << endl;
-		}//END IF
+		}
+		else if(temp.compare("\"") == 0)
+		{
+			tok_iter++;
+			temp = *tok_iter;	
+			cout << "<" << temp << ">\n";
+			while(temp.compare("\"") != 0)
+			{
+				ofs << temp;
+				tok_iter++;
+				temp = *tok_iter;	
+			}
+			ofs << temp;
+		}
+		//END IF
 	}//END FOR
 	
 	return 0;
