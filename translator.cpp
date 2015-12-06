@@ -28,52 +28,85 @@ int main()
 	ifstream ifs("data-clean.txt");						//Input file
 	ofstream ofs;
 	string reservedWords[6] = {"program", "var", "integer", 		//Array of reserved words
-				   "begin", "write", "end"};
+				   "begin", "write", "end."};
 	string fileName;
 	string varName;
 	string assignName;
 	string temp;								//Temporary string to hold line and parse reserved words out
+	string temp2;	
 	bool varRead;
 	bool assignRead;	
 	size_t foundAt;								//Variable to hold the position the reserved word was found
 	typedef boost::tokenizer<boost::char_separator<char> > tokenizer;	//Typedef the boost statement to tokenizer.
   	boost::char_separator<char> lineSep("\n");				//Tokenize each line
 	boost::char_separator<char> sep;
+	//boost::char_separator<char> writeSep("(),")
 	string content( (istreambuf_iterator<char>(ifs) ),			//String variable fed an entire text file.
 			(istreambuf_iterator<char>()    ));
 	
-	//Set the tokenizer with the string and delimiter setup.
+	//Set the tokenizer with the string holding the entire file and seperate it by new lines
   	tokenizer tokens(content, lineSep);
 
 	varRead = false;
 	assignRead = false;
 
-  	//FOR - Loop through the string and take each token
+  	//FOR - Loop through each new line
   	for(tokenizer::iterator tok_iter = tokens.begin(); tok_iter != tokens.end(); ++tok_iter)
   	{
-  		//Set an additional tokenizer with special chars delimters.
+  		//Set an additional tokenizer that breaks up the line by spaces and identifiers
   		tokenizer tokens2(*tok_iter, sep);
+
 		assignName = *tok_iter;
+
 		if(assignRead)
 		{
+			
 			while(assignName.compare("end.") != 0)
 			{
-				ofs << "\t" << assignName << endl;
+				tokenizer tokens3(assignName, sep);
+				ofs << "\t";
+				for(tokenizer::iterator tok_iter3 = tokens3.begin(); tok_iter3 != tokens3.end(); ++tok_iter3)
+				{
+					temp2 = *tok_iter3;
+
+					if(temp2.compare("write") == 0)
+					{
+						ofs << "cout << ";
+						while(temp2.compare(";") != 0)
+						{
+							++tok_iter3;
+							temp2 = *tok_iter3;
+							if(temp2.compare("(") != 0 && temp2.compare(")") != 0 && temp2.compare(",") != 0)
+							{
+								ofs << temp2 << " ";
+							}
+							else if(temp2.compare(",") == 0)
+							{
+								ofs << "<< ";
+							}
+						}
+						
+					}
+					else
+					{
+						ofs << temp2 << " ";
+					}
+				}
+				ofs << endl;
 				tok_iter++;
 				assignName = *tok_iter;
-				//cout << assignName << endl;
 			}
 			assignRead = false;
-			cout << assignName;
-			temp = assignName;
+			ofs << "\treturn 0;\n";
+			ofs << "}";
 		}
 		
 		for(tokenizer::iterator tok_iter2 = tokens2.begin(); tok_iter2 != tokens2.end(); ++tok_iter2)
 		{
 			temp = *tok_iter2;
-			cout << temp << endl;
 			if(varRead)
 			{
+
 				varName = temp;
 				while(varName.compare(":") != 0)
 				{
@@ -89,6 +122,7 @@ int main()
 			{
 				++tok_iter2;
 				fileName = *tok_iter2;
+				fileName.append(".cpp");
 				ofs.open(fileName.c_str());
 				ofs << "#include <iostream>\n";
 				ofs << "using namespace std;\n";
@@ -105,63 +139,6 @@ int main()
 				assignRead = true;
 			}
 		}
-		/*
-		//IF - If "program" is found, create a file based on the indentifier after program and output the header for the C++ file.
-		if(temp.compare(reservedWords[0]) == 0)
-		{
-			fileName = *tok_iter;
-			ofs.open(fileName.c_str());
-			ofs << "#include <iostream>\n";
-			ofs << "using namespace std;\n";
-			ofs << "int main()\n";
-			ofs << "{\n";
-		}//IF - If var is found, begin by declaring the int type and output each identifier
-		else if(temp.compare(reservedWords[1]) == 0)
-		{	
-			ofs << "\tint"; 
-			
-			while(varName.compare(":") != 0)
-			{
-				varName = *tok_iter;
-
-				if(varName.compare(":") != 0)
-				{
-					ofs << " " << varName;	
-				}
-
-				++tok_iter;
-			}
-			ofs << ";\n";
-		}
-		else if(temp.compare(reservedWords[3]) == 0)
-		{
-			while(assignName.compare("end") != 0)
-			{
-				assignName = *tok_iter;
-				if(assignName.compare("write") != 0)
-				{
-					ofs << assignName;
-					if(assignName.compare(";") == 0)
-					{
-						ofs << endl;
-					}
-					else
-					{
-						ofs << " ";
-					}
-				}
-				++tok_iter;
-			}
-		}
-		else if(temp.compare(reservedWords[5]) == 0)
-		{
-			ofs << "\treturn 0;\n";
-			ofs << "}";
-		}
-
-		
-		temp = *tok_iter;
-  		*/
 	}//END FOR
 
 	ofs.close();
