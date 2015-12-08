@@ -23,7 +23,11 @@ using namespace std;
 **************************************************************************************************************************************************************************
 * PURPOSE: This program receives a text file that is filled with verified code. It will then translate the code into C++ to be compiled and run.
 **************************************************************************************************************************************************************************/
+<<<<<<< HEAD
 int translate()
+=======
+void translate()
+>>>>>>> master
 {
 	ifstream ifs("finalv2.txt");						//Input file
 	ofstream ofs;								//Output file

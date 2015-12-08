@@ -96,3 +96,4 @@ void cleanTextFile()
 		//END IF
 	}//END FOR
 }
+
