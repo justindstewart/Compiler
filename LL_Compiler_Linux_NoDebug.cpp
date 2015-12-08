@@ -649,6 +649,6 @@ int main()
 		translate();
 		cout << "Translation Finished" << endl << endl;
 	}
-	system("pause");
+
 	return 0;
 }
