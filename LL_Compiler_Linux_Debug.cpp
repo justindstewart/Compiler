@@ -611,7 +611,7 @@ int main()
 			isValid = false;
 		}
 		//This checks if the current word is not write but consists of the letters of write then write was misspelled
-		else if (stack.back() == "D" && currentSyntax != "write" && !regex_match(currentSyntax, boost::regex("[write]{1,}")))
+		else if (stack.back() == "D" && currentSyntax != "write" && regex_match(currentSyntax, boost::regex("[a-z0-9]*[write]{1, }[a-z0-9]*")))
 		{
 			cout << "write is spelled wrong" << endl << endl;
 			isValid = false;
