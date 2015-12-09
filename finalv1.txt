@@ -1,16 +1,22 @@
-program a2015;
-(* This program computes and prints the value
-	of an expression *)
-var
-	(* declare variables *)
-	a1 , 	b2a, c, ba12	: integer ;
-begin
-	a1		= 3 ;
-	b2a = 	4 ;
-	c 	= 5;
-	write( c ); (*displace c *)
+(* Program Name: Fall 2015
+   Final Project
 
-	(* compute the value of the expression *)
-	ba12 = a1 * ( b2a + 2 * c ) ;
-	write( "value=", 	ba12 ) ; (* print the value of ba12 *)
+-------------------------------------------------*)
+program baa14;
+var
+
+	bad, 	dad12a, abba : integer; (* declare variables *)
+
+
+begin
+	dad12a		= 121	 ;
+	write(	 dad12a) ;
+
+	abba =10 ;
+	
+	bad = dad12a - abba*( 3 + dad12a * abba) ;(*find the value of bad*)
+	
+    (* display the bad value and abba value *)
+	write( "one=", bad) ;
+	write( "two=", abba	 );
 end.
