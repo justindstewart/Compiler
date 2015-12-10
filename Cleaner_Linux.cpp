@@ -37,7 +37,7 @@ void cleanTextFile()
 	string temp;								//Temporary string to hold line and parse reserved words out
 	size_t foundAt;								//Variable to hold the position the reserved word was found
 	typedef boost::tokenizer<boost::char_separator<char> > tokenizer;	//Typedef the boost statement to tokenizer.
-	boost::char_separator<char> sep("", ",;=+():*\"");				//Tokenizer by special chars
+	boost::char_separator<char> sep("", ",;-=+():*\"");				//Tokenizer by special chars
 	string content((istreambuf_iterator<char>(ifs)),			//String variable fed an entire text file.
 		(istreambuf_iterator<char>()));
 	content = regex_replace(content, commentReg, "");			//Take out all comments
